@@ -1,3 +1,8 @@
+# This attempt is likely not working due to the following bug.
+
+https://github.com/denoland/deno/issues/19666
+
+
 # universal-sqlite
 
 A universal SQLite wrapper for both Deno and Node.js environments, installable via npm.
