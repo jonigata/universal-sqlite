@@ -1,44 +1,14 @@
-// sqlite-wrapper.js
-
-const isDenoRuntime = typeof Deno !== 'undefined';
-
-let sqlite3;
-let open;
-let initializationPromise = null;
-
-async function initializeSqlite() {
-  if (initializationPromise) {
-    return initializationPromise;
-  }
-
-  initializationPromise = (async () => {
-    if (isDenoRuntime) {
-      const denoSqlite = await import('https://deno.land/x/sqlite@v3.4.0/mod.ts');
-      sqlite3 = denoSqlite;
-      open = denoSqlite.open;
-    } else {
-      const nodeSqlite = await import('sqlite3');
-      const nodeOpenSqlite = await import('sqlite');
-      sqlite3 = nodeSqlite.default;
-      open = nodeOpenSqlite.open;
-    }
-  })();
-
-  return initializationPromise;
-}
-
-class UniversalSQLite {
+export class UniversalSQLite {
   constructor(dbPath = './database.sqlite') {
     this.dbPath = dbPath;
     this.db = null;
   }
 
   async init() {
-    await initializeSqlite();
     if (!this.db) {
-      this.db = await open({
+      this.db = await this.open({
         filename: this.dbPath,
-        driver: sqlite3.Database
+        driver: this.sqlite3.Database
       });
     }
   }
@@ -59,6 +29,13 @@ class UniversalSQLite {
       this.db = null;
     }
   }
-}
 
-export { UniversalSQLite };
+  // これらのメソッドは環境固有の実装で上書きされます
+  async open() {
+    throw new Error("Not implemented");
+  }
+
+  get sqlite3() {
+    throw new Error("Not implemented");
+  }
+}
