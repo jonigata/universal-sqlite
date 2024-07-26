@@ -1,0 +1,33 @@
+{
+  "name": "universal-sqlite",
+  "version": "0.0.3",
+  "description": "A universal SQLite wrapper for both Deno and Node.js",
+  "main": "src/sqlite-wrapper.js",
+  "types": "src/sqlite-wrapper.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "keywords": ["sqlite", "deno", "node", "database", "universal"],
+  "author": "Naoyuki Hirayama <naoyuki.hirayama@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "sqlite": "^4.1.2",
+    "sqlite3": "^5.1.2"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "@types/jest": "^26.0.24"
+  },
+  "jest": {
+    "transform": {},
+    "extensionsToTreatAsEsm": [".js"]
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/sqlite-wrapper.js",
+    "./mod.js": "./src/mod.js"
+  }  
+}
