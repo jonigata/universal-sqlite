@@ -7,8 +7,7 @@ export class UniversalSQLite {
   async init() {
     if (!this.db) {
       this.db = await this.open({
-        filename: this.dbPath,
-        driver: this.sqlite3.Database
+        filename: this.dbPath
       });
     }
   }
@@ -28,14 +27,5 @@ export class UniversalSQLite {
       await this.db.close();
       this.db = null;
     }
-  }
-
-  // これらのメソッドは環境固有の実装で上書きされます
-  async open() {
-    throw new Error("Not implemented");
-  }
-
-  get sqlite3() {
-    throw new Error("Not implemented");
   }
 }

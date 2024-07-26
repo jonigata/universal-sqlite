@@ -1,6 +1,6 @@
 // test/sqlite-wrapper.test.js
 
-import { UniversalSQLite } from './node.js';
+import { UniversalSQLite } from './index.js';
 
 describe('UniversalSQLite', () => {
   let db;
