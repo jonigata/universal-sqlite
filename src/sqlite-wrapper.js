@@ -4,18 +4,27 @@ const isDenoRuntime = typeof Deno !== 'undefined';
 
 let sqlite3;
 let open;
+let initializationPromise = null;
 
 async function initializeSqlite() {
-  if (isDenoRuntime) {
-    const denoSqlite = await import('https://deno.land/x/sqlite@v3.4.0/mod.ts');
-    sqlite3 = denoSqlite;
-    open = denoSqlite.open;
-  } else {
-    const nodeSqlite = await import('sqlite3');
-    const nodeOpenSqlite = await import('sqlite');
-    sqlite3 = nodeSqlite.default;
-    open = nodeOpenSqlite.open;
+  if (initializationPromise) {
+    return initializationPromise;
   }
+
+  initializationPromise = (async () => {
+    if (isDenoRuntime) {
+      const denoSqlite = await import('https://deno.land/x/sqlite@v3.4.0/mod.ts');
+      sqlite3 = denoSqlite;
+      open = denoSqlite.open;
+    } else {
+      const nodeSqlite = await import('sqlite3');
+      const nodeOpenSqlite = await import('sqlite');
+      sqlite3 = nodeSqlite.default;
+      open = nodeOpenSqlite.open;
+    }
+  })();
+
+  return initializationPromise;
 }
 
 class UniversalSQLite {
@@ -25,9 +34,7 @@ class UniversalSQLite {
   }
 
   async init() {
-    if (!sqlite3) {
-      await initializeSqlite();
-    }
+    await initializeSqlite();
     if (!this.db) {
       this.db = await open({
         filename: this.dbPath,
