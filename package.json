@@ -1,6 +1,6 @@
 {
   "name": "universal-sqlite",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A universal SQLite wrapper for both Deno and Node.js",
   "main": "src/sqlite-wrapper.js",
   "types": "src/sqlite-wrapper.d.ts",
@@ -20,8 +20,7 @@
     "@types/jest": "^26.0.24"
   },
   "jest": {
-    "transform": {},
-    "extensionsToTreatAsEsm": [".js"]
+    "transform": {}
   },
   "files": [
     "src"

@@ -1,11 +1,10 @@
-// sqlite-wrapper.test.js
+// test/sqlite-wrapper.test.js
 
-import { UniversalSQLite } from './sqlite-wrapper.js';
-import fs from 'fs';
+import { UniversalSQLite } from '../src/sqlite-wrapper.js';
 
 describe('UniversalSQLite', () => {
   let db;
-  const testDbPath = './test.sqlite';
+  const testDbPath = ':memory:';
 
   beforeEach(async () => {
     db = new UniversalSQLite(testDbPath);
@@ -14,13 +13,10 @@ describe('UniversalSQLite', () => {
 
   afterEach(async () => {
     await db.close();
-    if (fs.existsSync(testDbPath)) {
-      fs.unlinkSync(testDbPath);
-    }
   });
 
   test('should create a new database', async () => {
-    expect(fs.existsSync(testDbPath)).toBe(true);
+    await expect(db.execute('CREATE TABLE test (id INTEGER PRIMARY KEY, name TEXT)')).resolves.not.toThrow();
   });
 
   test('should execute a query', async () => {
